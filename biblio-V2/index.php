@@ -1,8 +1,15 @@
-<?php ob_start() ?>
-<p>Ici le contenu de ma page d'accueil</p>
-
 <?php 
-$titre = "La Bibliothèque de l'AFCI";
-$content = ob_get_clean();
-require "template.php"; 
-?>
+require_once "Controller/LivresController.php";
+$livreController = new LivresController;
+if(empty($_GET['page'])){
+
+require_once "Views/acceuil.view.php";
+}else{
+switch($_GET['page']){
+    case "acceuil" : require_once "Views/acceuil.vieuw.php";
+    break;
+    case "livres" : $livreController->afficherLivre();
+    break;
+}
+
+}
