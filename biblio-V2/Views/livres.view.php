@@ -23,8 +23,12 @@ ob_start() ?>
             <td><?= $livres[$i]->getLivres()->getNbPages(); ?></td>
             <td>
                 <!-- Divisez la colonne "Actions" en deux sous-colonnes -->
-                <button>Modifier</button>
-                <button>Supprimer</button>
+                
+                <form method="POST" action="?>livres/s/<?= $livres[$i]->getIdLivre(); ?>"
+                onSubmit="return confirm('Voulez-vous vraiment supprimer le livre ?');">
+                <button type="submit">Supprimer</button>
+    </form>
+    <td ><a href="<?= URL ?>livres/m/<?= $livres[$i]->getIdLivre(); ?>"><button 
             </td>
         </tr>
     <?php endfor; ?>

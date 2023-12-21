@@ -30,13 +30,57 @@ require "View/ajoutLivre.view.php";
     }
 public function ajoutLivreValidation(){
 $file =$_FILES['image'];
-$repertoire ="public/images";
+$repertoire ="/public/images/";
 $nomImageAjoute = $this->ajoutImage($file,$repertoire);
 
 $this->livreManager->ajoutLivreBD($_POST['titre'],$_POST['nbPages'],$nomImageAjoute);
 
 header('Location:' . URL . "livres");
 }
+
+public function suppressionLivre($id){
+$nomImage = $this->livreManager->getLivre($id)->getImage();
+
+unlink("public/images".$nomImage);
+
+
+$this->livreManager->suppressionLivreBD($id);
+
+
+header('Location: '.URL. "livres");
+
+
+
+
+
+
+
+
+
+}
+
+public function modificationLivre($id){
+$livre = $this->livreManager->getLivreById($id);
+require "Views/modifierLivre.view.php";
+
+}
+public function modifLivreValidation(){
+$imageActuelle = $this->livreManager->getLivreById($_POST['identifiant'])->getImage();
+$file = $_FILES['image'];
+if($file['size']> 0){
+unlink("public/images/".$imageActuelle);
+$repertoire ="public/images";
+$nomImageAdd = $this->ajoutImage($file,$repertoire);
+}else{
+$nomImageAdd = $imageActuelle;
+}
+}
+$this->livreManager->modifLivreBD($_POST['identifiant'],($_POST['titre'],($_POST['nbPages'],$nomImageAdd);
+header('Location:'.URL."livres);
+
+
+}
+
 private function ajoutImage($file, $dir){
     //Va d'abord vérifier si on a renseigné une image dans le formulaire
     if(!isset($file['name']) || empty($file['name']))
